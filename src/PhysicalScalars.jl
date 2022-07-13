@@ -742,7 +742,7 @@ end
 # Math functions
 
 function Base.:(abs)(s::PhysicalScalar)::PhysicalScalar
-    value = abs(s.x)
+    value = MutableTypes.abs(s.x)
     units = s.u
     ps = newPhysicalScalar(units)
     set!(ps, value)
@@ -752,7 +752,7 @@ end
 function Base.:(sqrt)(s::PhysicalScalar)::PhysicalScalar
     if isCGS(s)
         if (abs(s.u.cm)%2 == 0) && (abs(s.u.g)%2 == 0) && (abs(s.u.s)%2 == 0) && (abs(s.u.C)%2 == 0)
-            value = sqrt(s.x)
+            value = MutableTypes.sqrt(s.x)
             units = PhysicalSystemsOfUnits.CGS(s.u.cm÷2, s.u.g÷2, s.u.s÷2, s.u.C÷2)
         else
             msg = "Square root can't be taken of a scalar because of its units."
@@ -760,7 +760,7 @@ function Base.:(sqrt)(s::PhysicalScalar)::PhysicalScalar
         end
     elseif isSI(s)
         if (abs(s.u.m)%2 == 0) && (abs(s.u.kg)%2 == 0) && (abs(s.u.s)%2 == 0) && (abs(s.u.K)%2 == 0)
-            value = sqrt(s.x)
+            value = MutableTypes.sqrt(s.x)
             units = PhysicalSystemsOfUnits.SI(s.u.m÷2, s.u.kg÷2, s.u.s÷2, s.u.K÷2)
         else
             msg = "Square root can't be taken of a scalar because of its units."
@@ -778,7 +778,7 @@ end
 function Base.:√(s:: PhysicalScalar)::PhysicalScalar
     if isCGS(s)
         if (abs(s.u.cm)%2 == 0) && (abs(s.u.g)%2 == 0) && (abs(s.u.s)%2 == 0) && (abs(s.u.C)%2 == 0)
-            value = √(s.x)
+            value = √(MutableTypes.toReal(s.x))
             units = PhysicalSystemsOfUnits.CGS(s.u.cm÷2, s.u.g÷2, s.u.s÷2, s.u.C÷2)
         else
             msg = "Square root can't be taken of a scalar because of its units."
@@ -786,7 +786,7 @@ function Base.:√(s:: PhysicalScalar)::PhysicalScalar
         end
     elseif isSI(s)
         if (abs(s.u.m)%2 == 0) && (abs(s.u.kg)%2 == 0) && (abs(s.u.s)%2 == 0) && (abs(s.u.K)%2 == 0)
-            value = √(s.x)
+            value = √(MutableTypes.toReal(s.x))
             units = PhysicalSystemsOfUnits.SI(s.u.m÷2, s.u.kg÷2, s.u.s÷2, s.u.K÷2)
         else
             msg = "Square root can't be taken of a scalar because of its units."
@@ -804,15 +804,15 @@ end
 function Base.Math.:(cbrt)(s::PhysicalScalar)::PhysicalScalar
     if isCGS(s)
         if (abs(s.u.cm)%3 == 0) && (abs(s.u.g)%3 == 0) && (abs(s.u.s)%3 == 0) && (abs(s.u.C)%3 == 0)
-            value = cbrt(s.x)
+            value = MutableTypes.cbrt(s.x)
             units = CGS(s.u.cm÷3, s.u.g÷3, s.u.s÷3, s.u.C÷3)
         else
             msg = "Cube root can't be taken of a scalar because of its units."
             throw(ErrorException(msg))
         end
     elseif isSI(s)
-        if (abs(s.u.m)%3 == 0) && (abs(s.u.kg)%3 == 0) && (abs(s.u.s)%3 == 0) && (abs(s.u,K)%3 == 0)
-            value = cbrt(s.x)
+        if (abs(s.u.m)%3 == 0) && (abs(s.u.kg)%3 == 0) && (abs(s.u.s)%3 == 0) && (abs(s.u.K)%3 == 0)
+            value = MutableTypes.cbrt(s.x)
             units = SI(s.u.m÷3, s.u.kg÷3, s.u.s÷3, s.u.K÷3)
         else
             msg = "Cube root can't be taken of a scalar because of its units."
@@ -830,15 +830,15 @@ end
 function Base.Math.:∛(s::PhysicalScalar)::PhysicalScalar
     if isCGS(s)
         if (abs(s.u.cm)%3 == 0) && (abs(s.u.g)%3 == 0) && (abs(s.u.s)%3 == 0) && (abs(s.u.C)%3 == 0)
-            value = ∛(s.x)
+            value = ∛(MutableTypes.toReal(s.x))
             units = CGS(s.u.cm÷3, s.u.g÷3, s.u.s÷3, s.u.C÷3)
         else
             msg = "Cube root can't be taken of a scalar because of its units."
             throw(ErrorException(msg))
         end
     elseif isSI(s)
-        if (abs(s.u.m)%3 == 0) && (abs(s.u.kg)%3 == 0) && (abs(s.u.s)%3 == 0) && (abs(s.u,K)%3 == 0)
-            value = ∛(s.x)
+        if (abs(s.u.m)%3 == 0) && (abs(s.u.kg)%3 == 0) && (abs(s.u.s)%3 == 0) && (abs(s.u.K)%3 == 0)
+            value = ∛(MutableTypes.toReal(s.x))
             units = SI(s.u.m÷3, s.u.kg÷3, s.u.s÷3, s.u.K÷3)
         else
             msg = "Cube root can't be taken of a scalar because of its units."
@@ -854,7 +854,7 @@ function Base.Math.:∛(s::PhysicalScalar)::PhysicalScalar
 end
 
 function Base.:(round)(y::PhysicalScalar)::PhysicalScalar
-    value = round(y.x)
+    value = MutableTypes.round(y.x)
     units = y.u
     ps = newPhysicalScalar(units)
     set!(ps, value)
@@ -862,7 +862,7 @@ function Base.:(round)(y::PhysicalScalar)::PhysicalScalar
 end
 
 function Base.:(ceil)(y::PhysicalScalar)::PhysicalScalar
-    value = ceil(y.x)
+    value = MutableTypes.ceil(y.x)
     units = y.u
     ps = newPhysicalScalar(units)
     set!(ps, value)
@@ -870,7 +870,7 @@ function Base.:(ceil)(y::PhysicalScalar)::PhysicalScalar
 end
 
 function Base.:(floor)(y::PhysicalScalar)::PhysicalScalar
-    value = floor(y.x)
+    value = MutableTypes.floor(y.x)
     units = y.u
     ps = newPhysicalScalar(units)
     set!(ps, value)
@@ -878,13 +878,13 @@ function Base.:(floor)(y::PhysicalScalar)::PhysicalScalar
 end
 
 function Base.:(sign)(y::PhysicalScalar)::Real
-    n = sign(y.x)
+    n = MutableTypes.sign(y.x)
     return n
 end
 
 function Base.:(sin)(y::PhysicalScalar)::Real
     if isDimensionless(y)
-        n = sin(y.x)
+        n = MutableTypes.sin(y.x)
     else
         msg = "The argument must be dimensionless when calling sin()."
         throw(ErrorException(msg))
@@ -894,7 +894,7 @@ end
 
 function Base.:(cos)(y::PhysicalScalar)::Real
     if isDimensionless(y)
-        n = cos(y.x)
+        n = MutableTypes.cos(y.x)
     else
         msg = "The argument must be dimensionless when calling cos()."
         throw(ErrorException(msg))
@@ -904,7 +904,7 @@ end
 
 function Base.:(tan)(y::PhysicalScalar)::Real
     if isDimensionless(y)
-        n = tan(y.x)
+        n = MutableTypes.tan(y.x)
     else
         msg = "The argument must be dimensionless when calling tan()."
         throw(ErrorException(msg))
@@ -914,7 +914,7 @@ end
 
 function Base.:(sinh)(y::PhysicalScalar)::Real
     if isDimensionless(y)
-        n = sinh(y.x)
+        n = MutableTypes.sinh(y.x)
     else
         msg = "The argument must be dimensionless when calling sinh()."
         throw(ErrorException(msg))
@@ -924,7 +924,7 @@ end
 
 function Base.:(cosh)(y::PhysicalScalar)::Real
     if isDimensionless(y)
-        n = cosh(y.x)
+        n = MutableTypes.cosh(y.x)
     else
         msg = "The argument must be dimensionless when calling cosh()."
         throw(ErrorException(msg))
@@ -934,7 +934,7 @@ end
 
 function Base.:(tanh)(y::PhysicalScalar)::Real
     if isDimensionless(y)
-        n = tanh(y.x)
+        n = MutableTypes.tanh(y.x)
     else
         msg = "The argument must be dimensionless when calling tanh()."
         throw(ErrorException(msg))
@@ -944,7 +944,7 @@ end
 
 function Base.:(asin)(y::PhysicalScalar)::Real
     if isDimensionless(y)
-        n = asin(y.x)
+        n = MutableTypes.asin(y.x)
     else
         msg = "The argument must be dimensionless when calling asin()."
         throw(ErrorException(msg))
@@ -954,7 +954,7 @@ end
 
 function Base.:(acos)(y::PhysicalScalar)::Real
     if isDimensionless(y)
-        n = acos(y.x)
+        n = MutableTypes.acos(y.x)
     else
         msg = "The argument must be dimensionless when calling acos()."
         throw(ErrorException(msg))
@@ -964,7 +964,7 @@ end
 
 function Base.:(atan)(y::PhysicalScalar)::Real
     if isDimensionless(y)
-        n = atan(y.x)
+        n = MutableTypes.atan(y.x)
     else
         msg = "The argument must be dimensionless when calling atan()."
         throw(ErrorException(msg))
@@ -974,7 +974,7 @@ end
 
 function Base.:(atan)(y::PhysicalScalar, x::PhysicalScalar)::Real
     if y.u == x.u
-        n = atan(y.x, x.x)
+        n = MutableTypes.atan(y.x, x.x)
     else
         msg = "The arguments must have the same type when calling atan(y, x)."
         throw(ErrorException(msg))
@@ -984,7 +984,7 @@ end
 
 function Base.:(atan)(y::PhysicalScalar, x::Union{Real, MNumber})::Real
     if isDimensionless(y)
-        n = atan(y.x, x)
+        n = MutableTypes.atan(y.x, x)
     else
         msg = "The scalar argument must dimensionless when calling atan(y, x)."
         throw(ErrorException(msg))
@@ -994,7 +994,7 @@ end
 
 function Base.:(atan)(y::Union{Real, MNumber}, x::PhysicalScalar)::Real
     if isDimensionless(y)
-        n = atan(y, x.x)
+        n = MutableTypes.atan(y, x.x)
     else
         msg = "The scalar argument must dimensionless when calling atan(y, x)."
         throw(ErrorException(msg))
@@ -1004,7 +1004,7 @@ end
 
 function Base.:(asinh)(y::PhysicalScalar)::Real
     if isDimensionless(y)
-        n = asinh(y.x)
+        n = MutableTypes.asinh(y.x)
     else
         msg = "The argument must be dimensionless when calling asinh()."
         throw(ErrorException(msg))
@@ -1014,7 +1014,7 @@ end
 
 function Base.:(acosh)(y::PhysicalScalar)::Real
     if isDimensionless(y)
-        n = acosh(y.x)
+        n = MutableTypes.acosh(y.x)
     else
         msg = "The argument must be dimensionless when calling acosh()."
         throw(ErrorException(msg))
@@ -1024,7 +1024,7 @@ end
 
 function Base.:(atanh)(y::PhysicalScalar)::Real
     if isDimensionless(y)
-        n = atanh(y.x)
+        n = MutableTypes.atanh(y.x)
     else
         msg = "The argument must be dimensionless when calling atanh()."
         throw(ErrorException(msg))
@@ -1034,7 +1034,7 @@ end
 
 function Base.:(log)(y::PhysicalScalar)::Real
     if isDimensionless(y)
-        n = log(y.x)
+        n = MutableTypes.log(y.x)
     else
         msg = "The argument must be dimensionless when calling log()."
         throw(ErrorException(msg))
@@ -1042,19 +1042,9 @@ function Base.:(log)(y::PhysicalScalar)::Real
     return n
 end
 
-function Base.:(log)(b:: Union{Real,MNumber}, y::PhysicalScalar)::Real
-    if isDimensionless(y)
-        n = log(b, y.x)
-    else
-        msg = "The argument must be dimensionless when calling log(b, y)."
-        throw(ErrorException(msg))
-    end
-    return n
-end
-
 function Base.:(log2)(y::PhysicalScalar)::Real
     if isDimensionless(y)
-        n = log2(y.x)
+        n = MutableTypes.log2(y.x)
     else
         msg = "The argument must be dimensionless when calling log2()."
         throw(ErrorException(msg))
@@ -1064,7 +1054,7 @@ end
 
 function Base.:(log10)(y::PhysicalScalar)::Real
     if isDimensionless(y)
-        n = log10(y.x)
+        n = MutableTypes.log10(y.x)
     else
         msg = "The argument must be dimensionless when calling log10()."
         throw(ErrorException(msg))
@@ -1074,7 +1064,7 @@ end
 
 function Base.:(exp)(y::PhysicalScalar)::Real
     if isDimensionless(y)
-        n = exp(y.x)
+        n = MutableTypes.exp(y.x)
     else
         msg = "The argument must be dimensionless when calling exp()."
         throw(ErrorException(msg))
@@ -1084,7 +1074,7 @@ end
 
 function Base.:(exp2)(y::PhysicalScalar)::Real
     if isDimensionless(y)
-        n = exp2(y.x)
+        n = MutableTypes.exp2(y.x)
     else
         msg = "The argument must be dimensionless when calling exp2()."
         throw(ErrorException(msg))
@@ -1094,7 +1084,7 @@ end
 
 function Base.:(exp10)(y::PhysicalScalar)::Real
     if isDimensionless(y)
-        n = exp10(y.x)
+        n = MutableTypes.exp10(y.x)
     else
         msg = "The argument must be dimensionless when calling exp10()."
         throw(ErrorException(msg))
