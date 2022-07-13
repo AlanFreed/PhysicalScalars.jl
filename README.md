@@ -30,7 +30,7 @@ struct PhysicalScalar <: PhysicalField
 end
 ```
 
-which is a subtype to the abstract type
+which is a sub-type to the abstract type
 
 ```
 abstract type PhysicalField end
@@ -71,15 +71,15 @@ while `Base.:(getindex)` and `Base.:(setindex!)` have been overloaded so that th
 function toString(y::PhysicalScalar; format::Char='E', precision::Int=5, aligned::Bool=false)::String
 ```
 
-where the keyword `format` is a character that, whenever its value is 'E' or 'e', represents the scalar in a scientific notation; otherwise, it will be represented in a fixed-point notation. Keyword `precision` specifies the number of significant digits to be represented in the string, which can accept values from the set \{3…7\}. Keyword `aligned`, when set to `true`, will add a whitespace in front of any non-negative scalar string representation, e.g., this could be useful when printing out a matrix of scalars; otherwise, there is no leading whitespace in its string representation, which is the default.
+where the keyword `format` is a character that, whenever its value is 'E' or 'e', represents the scalar in a scientific notation; otherwise, it will be represented in a fixed-point notation. Keyword `precision` specifies the number of significant digits to be represented in the string, which can accept values from the set \{3…7\}. Keyword `aligned`, when set to `true`, will add a white space in front of any non-negative scalar string representation, e.g., this could be useful when printing out a matrix of scalars; otherwise, there is no leading white space in its string representation, which is the default.
 
 ## Operators
 
-The following operators have been overloaded so that they can handel objects of type PhysicalScalar, whenever such operations make sense, e.g., one cannot add two scalars with different units; however, one can multiply them. The overloaded logical operators include: `==`, `≠`, `≈`, `<`, `≤`, `≥` and `>`. The overloaded unary operators include: `+` and `-`. And the overloaded binary operators include: `+`, `-`, `*`, `/` and `^`.
+The following operators have been overloaded so that they can handle objects of type PhysicalScalar, whenever such operations make sense, e.g., one cannot add two scalars with different units; however, one can multiply them. The overloaded logical operators include: `==`, `≠`, `≈`, `<`, `≤`, `≥` and `>`. The overloaded unary operators include: `+` and `-`. And the overloaded binary operators include: `+`, `-`, `*`, `/` and `^`.
 
 ## Methods for both PhysicalScalar and ArrayOfPhysicalScalars
 
-The following methods can accept arguments that are objects of either type, viz., PhysicalScalar or type ArrayOfPhysicalScalars. They are self explanitory: `copy`, `deepcopy`, `isDimensionless`, `isCGS`, `isSI` and `toReal`.
+The following methods can accept arguments that are objects of either type, viz., PhysicalScalar or type ArrayOfPhysicalScalars. They are self explanatory: `copy`, `deepcopy`, `isDimensionless`, `isCGS`, `isSI` and `toReal`.
 
 ## Math functions for PhysicalScalar
 
