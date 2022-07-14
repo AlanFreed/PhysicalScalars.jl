@@ -200,10 +200,6 @@ function toReal(s::PhysicalScalar)::Real
     return MutableTypes.toReal(s.x)
 end
 
-function toReal(as::ArrayOfPhysicalScalars)::Array
-    return deepcopy(as.a)
-end
-
 #=
 --------------------------------------------------------------------------------
 =#
