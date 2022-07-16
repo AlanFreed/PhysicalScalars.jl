@@ -89,6 +89,6 @@ The following methods can accept arguments that are objects of either type, viz.
 
 ## Math functions for PhysicalScalar
 
-The following functions can handle arguments with physical dimensions: `toReal`, `abs`, `sqrt` or `√` (provided the unit exponents can all be evenly divided by 2), `cbrt` or `∛` (provided the unit exponents can all be evenly divided by 3), `round`, `ceil` and `floor`, all of which return instances of type `PhysicalScalar`, while functions `sign` and `atan(y,x)` (provided the rise `y` has the same units as the run `x`) return a `Real` value.
+The following functions can handle arguments with physical dimensions: `toReal`, `abs`, `sqrt` (provided the unit exponents can all be evenly divided by 2), `cbrt` (provided the unit exponents can all be evenly divided by 3), `round`, `ceil` and `floor`, all of which return instances of type `PhysicalScalar`, while functions `sign` and `atan(y,x)` (provided the rise `y` has the same units as the run `x`) return a `Real` value.
 
 The following math functions require the scalar argument to be dimensionless: `sin`, `cos`, `tan`, `sinh`, `cosh`, `tanh`, `asin`, `acos`, `atan`, `asinh`, `acosh`, `atanh`, `log`, `log2`, `log10`, `exp`, `exp2` and `exp10`. These functions return a `Real` value.

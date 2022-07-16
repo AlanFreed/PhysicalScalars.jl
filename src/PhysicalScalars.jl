@@ -32,9 +32,7 @@ export
     # math functions
     abs,
     sqrt,
-    √,
     cbrt,
-    ∛,
     round,
     ceil,
     floor,
@@ -771,32 +769,6 @@ function Base.:(sqrt)(s::PhysicalScalar)::PhysicalScalar
     return ps
 end
 
-function Base.:√(s:: PhysicalScalar)::PhysicalScalar
-    if isCGS(s)
-        if (abs(s.u.cm)%2 == 0) && (abs(s.u.g)%2 == 0) && (abs(s.u.s)%2 == 0) && (abs(s.u.C)%2 == 0)
-            value = √(MutableTypes.toReal(s.x))
-            units = PhysicalSystemsOfUnits.CGS(s.u.cm÷2, s.u.g÷2, s.u.s÷2, s.u.C÷2)
-        else
-            msg = "Square root can't be taken of a scalar because of its units."
-            throw(ErrorException(msg))
-        end
-    elseif isSI(s)
-        if (abs(s.u.m)%2 == 0) && (abs(s.u.kg)%2 == 0) && (abs(s.u.s)%2 == 0) && (abs(s.u.K)%2 == 0)
-            value = √(MutableTypes.toReal(s.x))
-            units = PhysicalSystemsOfUnits.SI(s.u.m÷2, s.u.kg÷2, s.u.s÷2, s.u.K÷2)
-        else
-            msg = "Square root can't be taken of a scalar because of its units."
-            throw(ErrorException(msg))
-        end
-    else
-        msg = "Square roots of a scalar require it to have CGS or SI units."
-        throw(ErrorException(msg))
-    end
-    ps = newPhysicalScalar(units)
-    set!(ps, value)
-    return ps
-end
-
 function Base.Math.:(cbrt)(s::PhysicalScalar)::PhysicalScalar
     if isCGS(s)
         if (abs(s.u.cm)%3 == 0) && (abs(s.u.g)%3 == 0) && (abs(s.u.s)%3 == 0) && (abs(s.u.C)%3 == 0)
@@ -809,32 +781,6 @@ function Base.Math.:(cbrt)(s::PhysicalScalar)::PhysicalScalar
     elseif isSI(s)
         if (abs(s.u.m)%3 == 0) && (abs(s.u.kg)%3 == 0) && (abs(s.u.s)%3 == 0) && (abs(s.u.K)%3 == 0)
             value = MutableTypes.cbrt(s.x)
-            units = SI(s.u.m÷3, s.u.kg÷3, s.u.s÷3, s.u.K÷3)
-        else
-            msg = "Cube root can't be taken of a scalar because of its units."
-            throw(ErrorException(msg))
-        end
-    else
-        msg = "Cube roots of a scalar require it to have CGS or SI units."
-        throw(ErrorException(msg))
-    end
-    ps = newPhysicalScalar(units)
-    set!(ps, value)
-    return ps
-end
-
-function Base.Math.:∛(s::PhysicalScalar)::PhysicalScalar
-    if isCGS(s)
-        if (abs(s.u.cm)%3 == 0) && (abs(s.u.g)%3 == 0) && (abs(s.u.s)%3 == 0) && (abs(s.u.C)%3 == 0)
-            value = ∛(MutableTypes.toReal(s.x))
-            units = CGS(s.u.cm÷3, s.u.g÷3, s.u.s÷3, s.u.C÷3)
-        else
-            msg = "Cube root can't be taken of a scalar because of its units."
-            throw(ErrorException(msg))
-        end
-    elseif isSI(s)
-        if (abs(s.u.m)%3 == 0) && (abs(s.u.kg)%3 == 0) && (abs(s.u.s)%3 == 0) && (abs(s.u.K)%3 == 0)
-            value = ∛(MutableTypes.toReal(s.x))
             units = SI(s.u.m÷3, s.u.kg÷3, s.u.s÷3, s.u.K÷3)
         else
             msg = "Cube root can't be taken of a scalar because of its units."
