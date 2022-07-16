@@ -1,6 +1,6 @@
 # PhysicalScalars.jl
 
-This module provides a type for physical scalars, overloading both math operators and functions.
+This module provides a type for physical scalars, overloading both math operators and standard functions.
 
 To use this module you will need to add the following Julia packages to yours:
 
@@ -46,26 +46,32 @@ struct ArrayOfPhysicalScalars
 end
 ```
 
+where all entries in the array have the same physical units.
+
 Constructors for these types are also re-exported here, they being
 
 ```
 function newPhysicalScalar(units::PhysicalUnits)::PhysicalScalar
 ```
 
-which supplies a new scalar whose value is `0` and whose physical units are those supplied by `units`, and
+which supplies a new scalar whose value is `0` and whose physical units are those supplied by the argument `units`, and
 
 ```
 function newArrayOfPhysicalScalars(len::Integer, s₁::PhysicalScalar)::ArrayOfPhysicalScalars
 ```
 
-where `s₁` is the first entry in a new array of scalars whose length is `len`. To retrieve and assign scalar values to the entries of this array, the following methods are re-exported
+where `s₁` is the first entry in a new array of scalars whose length is `len`.
+
+To retrieve and assign `Real` values to a `PhysicalScalar`, the following methods are re-exported
 
 ```
 function get(y::PhysicalScalar)::Real
 function set!(y::PhysicalScalar, x::Real)
 ```
 
-while `Base.:(getindex)` and `Base.:(setindex!)` have been overloaded so that the bracket notation `[]` can be used to retrieve and assign scalar fields belonging to an instance of `ArrayOfPhysicalScalars`. Also, conversion to a string is provided for by the re-exported method
+while `Base.:(getindex)` and `Base.:(setindex!)` have been overloaded so that the bracket notation `[]` can be used to retrieve and assign scalar fields belonging to an instance of `ArrayOfPhysicalScalars`.
+
+Also, conversion of a scalar field to string is provided for by the re-exported method
 
 ```
 function toString(y::PhysicalScalar; format::Char='E', precision::Int=5, aligned::Bool=false)::String
@@ -79,7 +85,7 @@ The following operators have been overloaded so that they can handle objects of 
 
 ## Methods for both PhysicalScalar and ArrayOfPhysicalScalars
 
-The following methods can accept arguments that are objects of either type, viz., PhysicalScalar or type ArrayOfPhysicalScalars. They are self explanatory: `copy`, `deepcopy`, `isDimensionless`, `isCGS` and `isSI`.
+The following methods can accept arguments that are objects of either type, viz., PhysicalScalar or type ArrayOfPhysicalScalars. They are self explanatory: `copy`, `deepcopy`, `isDimensionless`, `isCGS`, `isSI`, `toCGS` and `toSI`.
 
 ## Math functions for PhysicalScalar
 
