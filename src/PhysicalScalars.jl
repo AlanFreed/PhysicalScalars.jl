@@ -719,7 +719,7 @@ function Base.:^(y::PhysicalScalar, z::Union{Real, MNumber})::PhysicalScalar
         d = denominator(z)
         value = y.x ^ (n / d)
         if isCGS(y)
-            if ((y.u.cm * n % d == 0) && (y.u.g * n % d == 0) && 
+            if ((y.u.cm * n % d == 0) && (y.u.g * n % d == 0) &&
                 (y.u.s * n % d == 0) && (y.u.C * n % d == 0))
                 units = PhysicalSystemsOfUnits.CGS(Int8(y.u.cm*n÷d), Int8(y.u.g*n÷d), Int8(y.u.s*n÷d), Int8(y.u.C*n÷d))
             else
@@ -727,16 +727,15 @@ function Base.:^(y::PhysicalScalar, z::Union{Real, MNumber})::PhysicalScalar
                 throw(ErrorException(msg))
             end
         elseif isSI(y)
-            if ((y.u.m * n % d == 0) && (y.u.kg * n % d == 0) && 
+            if ((y.u.m * n % d == 0) && (y.u.kg * n % d == 0) &&
                 (y.u.s * n % d == 0) && (y.u.K * n % d == 0))
                 units = PhysicalSystemsOfUnits.SI(Int8(y.u.m*n÷d), Int8(y.u.kg*n÷d), Int8(y.u.s*n÷d), Int8(y.u.K*n÷d))
             else
                 msg == "Scalars raised to rational powers must produce units with integer powers."
                 throw(ErrorException(msg))
             end
-                units = PhysicalSystemsOfUnits.SI(Int8(y.u.m*z), Int8(y.u.kg*z), Int8(y.u.s*z), Int8(y.u.K*z))
         else
-            msg = "Scalars raised to integer powers require the scalar to have CGS or SI units."
+            msg = "Scalars raised to rational powers require the scalar to have CGS or SI units."
             throw(ErrorException(msg))
         end
     elseif isDimensionless(y)
