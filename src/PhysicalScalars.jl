@@ -13,7 +13,7 @@ using
     newArrayOfPhysicalScalars,
     get,
     set!,
-    toString
+    StoString
 
 export
     # For both PhysicalScalar and ArrayOfPhysicalScalars objects:
@@ -24,11 +24,12 @@ export
     # type convertors
     toCGS,
     toSI,
-    toReal,
     # copying methods
     copy,
     deepcopy,
     # For PhysicalScalar objects (not for ArrayOfPhysicalScalars objects):
+    toString,
+    toReal,
     # math functions
     abs,
     round,
@@ -190,6 +191,13 @@ function toSI(as::ArrayOfPhysicalScalars)::ArrayOfPhysicalScalars
         msg = "Units of scalar s must be either CGS or SI."
         throw(ErrorException(msg))
     end
+end
+
+function toString(y::PhysicalScalar;
+                  format::Char='E',
+                  precision::Int=5,
+                  aligned::Bool=false)::String
+    return StoString(y; format, precision, aligned)
 end
 
 function toReal(s::PhysicalScalar)::Real
