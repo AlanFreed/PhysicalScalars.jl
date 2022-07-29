@@ -1,6 +1,7 @@
 module runtests
 
 using
+    MutableTypes,
     PhysicalSystemsOfUnits,
     PhysicalScalars,
     Test
@@ -76,26 +77,28 @@ end
     @test PhysicalScalars.abs(s2) == s2
 end
 
-@testset "sqrt" begin
+@testset "x^(1//2)" begin
     s1 = newPhysicalScalar(SI_AREA)
     set!(s1, 4.0)
     s2 = newPhysicalScalar(SI_LENGTH)
     set!(s2, 2.0)
-    @test sqrt(s1) == s2
+    power = MutableTypes.MRational(1 // 2)
+    @test s1^power == s2
     s3 = newPhysicalScalar(CGS_DIMENSIONLESS)
     set!(s3, 4.0)
-    @test sqrt(s3) == 2.0
+    @test s3^0.5 == 2.0
 end
 
-@testset "cbrt" begin
+@testset "x^(1//3)" begin
     s1 = newPhysicalScalar(SI_VOLUME)
     set!(s1, 8.0)
     s2 = newPhysicalScalar(SI_LENGTH)
     set!(s2, 2.0)
-    @test cbrt(s1) == s2
+    power = MutableTypes.MRational(1 // 3)
+    @test s1^power == s2
     s3 = newPhysicalScalar(CGS_DIMENSIONLESS)
     set!(s3, 8.0)
-    @test cbrt(s3) == 2.0
+    @test s3^power == 2.0
 end
 
 @testset "round" begin

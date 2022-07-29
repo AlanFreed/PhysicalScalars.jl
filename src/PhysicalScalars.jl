@@ -31,8 +31,6 @@ export
     # For PhysicalScalar objects (not for ArrayOfPhysicalScalars objects):
     # math functions
     abs,
-    sqrt,
-    cbrt,
     round,
     ceil,
     floor,
@@ -707,12 +705,36 @@ end
 
 function Base.:^(y::PhysicalScalar, z::Union{Real, MNumber})::PhysicalScalar
     if (typeof(z) == Integer) || (typeof(z) == MutableTypes.MInteger)
+        value = y.x ^ z
         if isCGS(y)
-            value = y.x ^ z
-            units = PhysicalSystemsOfUnits.CGS(y.u.cm*z, y.u.g*z, y.u.s*z, y.u.C*z)
+            units = PhysicalSystemsOfUnits.CGS(Int8(y.u.cm*z), Int8(y.u.g*z), Int8(y.u.s*z), Int8(y.u.C*z))
         elseif isSI(y)
-            value = y.x ^ z
-            units = PhysicalSystemsOfUnits.SI(y.u.m*z, y.u.kg*z, y.u.s*z, y.u.K*z)
+            units = PhysicalSystemsOfUnits.SI(Int8(y.u.m*z), Int8(y.u.kg*z), Int8(y.u.s*z), Int8(y.u.K*z))
+        else
+            msg = "Scalars raised to integer powers require the scalar to have CGS or SI units."
+            throw(ErrorException(msg))
+        end
+    elseif (typeof(z) == Rational) || (typeof(z) == MutableTypes.MRational)
+        n = numerator(z)
+        d = denominator(z)
+        value = y.x ^ (n / d)
+        if isCGS(y)
+            if ((y.u.cm * n % d == 0) && (y.u.g * n % d == 0) && 
+                (y.u.s * n % d == 0) && (y.u.C * n % d == 0))
+                units = PhysicalSystemsOfUnits.CGS(Int8(y.u.cm*n÷d), Int8(y.u.g*n÷d), Int8(y.u.s*n÷d), Int8(y.u.C*n÷d))
+            else
+                msg == "Scalars raised to rational powers must produce units with integer powers."
+                throw(ErrorException(msg))
+            end
+        elseif isSI(y)
+            if ((y.u.m * n % d == 0) && (y.u.kg * n % d == 0) && 
+                (y.u.s * n % d == 0) && (y.u.K * n % d == 0))
+                units = PhysicalSystemsOfUnits.SI(Int8(y.u.m*n÷d), Int8(y.u.kg*n÷d), Int8(y.u.s*n÷d), Int8(y.u.K*n÷d))
+            else
+                msg == "Scalars raised to rational powers must produce units with integer powers."
+                throw(ErrorException(msg))
+            end
+                units = PhysicalSystemsOfUnits.SI(Int8(y.u.m*z), Int8(y.u.kg*z), Int8(y.u.s*z), Int8(y.u.K*z))
         else
             msg = "Scalars raised to integer powers require the scalar to have CGS or SI units."
             throw(ErrorException(msg))
@@ -743,58 +765,6 @@ function Base.:(abs)(s::PhysicalScalar)::PhysicalScalar
     return ps
 end
 
-function Base.:(sqrt)(s::PhysicalScalar)::PhysicalScalar
-    if isCGS(s)
-        if (abs(s.u.cm)%2 == 0) && (abs(s.u.g)%2 == 0) && (abs(s.u.s)%2 == 0) && (abs(s.u.C)%2 == 0)
-            value = MutableTypes.sqrt(s.x)
-            units = PhysicalSystemsOfUnits.CGS(s.u.cm÷2, s.u.g÷2, s.u.s÷2, s.u.C÷2)
-        else
-            msg = "Square root can't be taken of a scalar because of its units."
-            throw(ErrorException(msg))
-        end
-    elseif isSI(s)
-        if (abs(s.u.m)%2 == 0) && (abs(s.u.kg)%2 == 0) && (abs(s.u.s)%2 == 0) && (abs(s.u.K)%2 == 0)
-            value = MutableTypes.sqrt(s.x)
-            units = PhysicalSystemsOfUnits.SI(s.u.m÷2, s.u.kg÷2, s.u.s÷2, s.u.K÷2)
-        else
-            msg = "Square root can't be taken of a scalar because of its units."
-            throw(ErrorException(msg))
-        end
-    else
-        msg = "Square roots of a scalar require it to have CGS or SI units."
-        throw(ErrorException(msg))
-    end
-    ps = newPhysicalScalar(units)
-    set!(ps, value)
-    return ps
-end
-
-function Base.Math.:(cbrt)(s::PhysicalScalar)::PhysicalScalar
-    if isCGS(s)
-        if (abs(s.u.cm)%3 == 0) && (abs(s.u.g)%3 == 0) && (abs(s.u.s)%3 == 0) && (abs(s.u.C)%3 == 0)
-            value = MutableTypes.cbrt(s.x)
-            units = CGS(s.u.cm÷3, s.u.g÷3, s.u.s÷3, s.u.C÷3)
-        else
-            msg = "Cube root can't be taken of a scalar because of its units."
-            throw(ErrorException(msg))
-        end
-    elseif isSI(s)
-        if (abs(s.u.m)%3 == 0) && (abs(s.u.kg)%3 == 0) && (abs(s.u.s)%3 == 0) && (abs(s.u.K)%3 == 0)
-            value = MutableTypes.cbrt(s.x)
-            units = SI(s.u.m÷3, s.u.kg÷3, s.u.s÷3, s.u.K÷3)
-        else
-            msg = "Cube root can't be taken of a scalar because of its units."
-            throw(ErrorException(msg))
-        end
-    else
-        msg = "Cube roots of a scalar require it to have CGS or SI units."
-        throw(ErrorException(msg))
-    end
-    ps = newPhysicalScalar(units)
-    set!(ps, value)
-    return ps
-end
-
 function Base.:(round)(y::PhysicalScalar)::PhysicalScalar
     value = MutableTypes.round(y.x)
     units = y.u
@@ -820,8 +790,7 @@ function Base.:(floor)(y::PhysicalScalar)::PhysicalScalar
 end
 
 function Base.:(sign)(y::PhysicalScalar)::Real
-    n = MutableTypes.sign(y.x)
-    return n
+    return MutableTypes.sign(y.x)
 end
 
 function Base.:(sin)(y::PhysicalScalar)::Real

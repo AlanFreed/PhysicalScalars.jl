@@ -1,7 +1,7 @@
 name = "PhysicalScalars"
 uuid = "ead00276-e241-41fb-9b24-fdb896b34480"
 authors = ["Alan Freed <alan.d.freed@proton.me>"]
-version = "0.1.1"
+version = "0.1.2"
 
 [deps]
 MutableTypes = "0509ba21-2830-4def-8137-4dac647fee02"

@@ -89,6 +89,14 @@ The following methods can accept arguments that are objects of either type, viz.
 
 ## Math functions for PhysicalScalar
 
-The following functions can handle arguments with physical dimensions: `toReal`, `abs`, `sqrt` (provided the unit exponents can all be evenly divided by 2), `cbrt` (provided the unit exponents can all be evenly divided by 3), `round`, `ceil` and `floor`, all of which return instances of type `PhysicalScalar`, while functions `sign` and `atan(y,x)` (provided the rise `y` has the same units as the run `x`) return a `Real` value.
+The following functions can handle arguments with physical dimensions: `toReal`, `abs`, `round`, `ceil` and `floor`, all of which return instances of type `PhysicalScalar`, while functions `sign` and `atan(y,x)` (provided the rise `y` has the same units as the run `x`) return a `Real` value.
 
 The following math functions require the scalar argument to be dimensionless: `sin`, `cos`, `tan`, `sinh`, `cosh`, `tanh`, `asin`, `acos`, `atan`, `asinh`, `acosh`, `atanh`, `log`, `log2`, `log10`, `exp`, `exp2` and `exp10`. These functions return a `Real` value.
+
+## Note
+
+There is an issue of unknown origin (to me) that arises whenever one attempts to overload functions `sqrt(x)` and `cbrt(x)` in that the compiler indicates that these functions will overwrite themselves, causing the following warning to appear:
+`
+Incremental compilation may be fatally broken for this module.
+`
+Write your code as `x^(MutableTypes.MRational(1//2))` in place of `sqrt(x)` and `x^(MutableTypes.MRational(1//3))` in place of `cbrt(x)` to circumvent this problem. Use rational numbers for the powers. Only if x is dimensionless will `x^0.5` return the square root of a scalar field; likewise, for cube roots. Units with fractional powers are not allowed.
