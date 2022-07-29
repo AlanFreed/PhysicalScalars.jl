@@ -71,13 +71,20 @@ function set!(y::PhysicalScalar, x::Real)
 
 while `Base.:(getindex)` and `Base.:(setindex!)` have been overloaded so that the bracket notation `[]` can be used to retrieve and assign scalar fields belonging to an instance of `ArrayOfPhysicalScalars`.
 
-Also, conversion of a scalar field to string is provided for by the re-exported method
+## Type conversions
+
+Conversion of a scalar field to string is provided for by the function
 
 ```
 function toString(y::PhysicalScalar; format::Char='E', precision::Int=5, aligned::Bool=false)::String
 ```
 
 where the keyword `format` is a character that, whenever its value is 'E' or 'e', represents the scalar in a scientific notation; otherwise, it will be represented in a fixed-point notation. Keyword `precision` specifies the number of significant digits to be represented in the string, which can accept values from the set \{3…7\}. Keyword `aligned`, when set to `true`, will add a white space in front of any non-negative scalar string representation, e.g., this could be useful when printing out a matrix of scalars; otherwise, there is no leading white space in its string representation, which is the default.
+
+Conversion to the real number held by the scalar is provided by
+```
+function toReal(s::PhysicalScalar)::Real
+```
 
 ## Operators
 
